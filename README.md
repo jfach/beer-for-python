@@ -27,10 +27,10 @@ print corona.abv #the ABV (alcohol by volume) of the beer
 alternatively, 
 
 ```python
-from pybeer import beer_data
+from pybeer import pybeer
 
-data = beer_data.Engine()
-data.get_brewer('coors light')
-data.get_style('coors light')
-data.get_abv('coors light')
+beer = pybeer.Beer
+print beer.get_brewer('coors light')
+print beer.get_style('corona extra')
+print beer.get_abv('modelo especiale')
 ```
