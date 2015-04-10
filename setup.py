@@ -5,7 +5,7 @@ setup(
 	name="pybeer",
 
 	# Version number:
-	version="0.1.21",
+	version="0.1.22",
 	description="Access quality beer data through Python.",
 	# Application author details:
 	author="Jordan Facibene",
