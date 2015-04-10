@@ -1,4 +1,4 @@
-# beer-for-python
+# Beer, for Python...
 
 # Description
 
