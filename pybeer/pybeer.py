@@ -3,6 +3,7 @@ import beer_data
 class Beer:
 	def __init__(self, name):
 		self.name = name
+		self.score = self.get_score(self.name)
 		self.brewer = self.get_brewer(self.name)
 		self.style = self.get_style(self.name)
 		self.abv = self.get_abv(self.name)
@@ -33,3 +34,12 @@ class Beer:
 		brewer_end = brewer_area.find("</b></a>")
 		brewer = brewer_area[brewer_start+3:brewer_end]
 		return brewer
+
+	def get_score(beer):
+		raw = beer_profile(beer)
+		score_pointer = raw.find("BAscore_big ba-score")
+		score_area = raw[score_pointer:score_pointer+100]
+		score_start = score_area.find(">")
+		score_end = score_area.find("<")
+		score = score_area[score_start+1:score_end]
+		return score

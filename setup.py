@@ -5,12 +5,12 @@ setup(
 	name="pybeer",
 
 	# Version number:
-	version="0.1.22",
+	version="0.1.23",
 	description="Access quality beer data through Python.",
 	# Application author details:
 	author="Jordan Facibene",
 	author_email="jordan.facibene13@stjohns.edu",
-	download_url = 'https://github.com/Jfach/beer-for-python/tarball/0.1.2',
+	download_url = 'https://github.com/Jfach/beer-for-python/tarball/0.1.23',
 
 	# Packages
 	packages=["pybeer"],
