@@ -1,4 +1,5 @@
 import mechanize
+import bad_beer
 
 search = mechanize.Browser()
 search.set_handle_robots(False)
@@ -15,6 +16,7 @@ def find_beer_link(beer):
 	for link in search.links():
 		if str(link.text).lower() == beer.lower():
 			return link.url
+	raise bad_beer.Invalid_Beer("ERROR: [{}] not found. Did you check the spelling/name?".format(beer))
 
 def beer_profile(beer):
 	beer_page = find_beer_link(beer)

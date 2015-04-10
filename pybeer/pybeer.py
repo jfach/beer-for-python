@@ -1,14 +1,20 @@
 import beer_data
+import bad_beer as errors
 
 class Beer:
 	def __init__(self, name):
-		self.name = name
-		self.raw_profile = beer_data.beer_profile(self.name)
-		self.score = self.get_score()
-		self.brewer = self.get_brewer()
-		self.style = self.get_style()
-		self.abv = self.get_abv()
-		self.description = self.get_description()
+		try:
+			self.name = name
+			self.raw_profile = beer_data.beer_profile(self.name)
+			self.score = self.get_score()
+			self.brewer = self.get_brewer()
+			self.style = self.get_style()
+			self.abv = self.get_abv()
+			self.description = self.get_description()
+		except errors.Invalid_Beer as error:
+			print(error.args[0])
+		except AttributeError:
+			print("you are trying to call a data retrieval method on a beer that could not be found")
 
 	def get_abv(self):
 		raw = self.raw_profile
