@@ -16,6 +16,15 @@ pip install pybeer
 ```python
 from pybeer import pybeer
 
+beer = pybeer.Beer
+beer.get_brewer('coors light')
+beer.get_style('corona extra')
+beer.get_abv('modelo especiale')
+```
+Alternatively, you can just make an instance of a class and pass in the name of a beer as a string, and __init__ will gather the data for your beer.
+```python
+from pybeer import pybeer
+
 corona = pybeer.Beer('corona extra')
 
 print corona.name #nothing fancy, you just typed it above
@@ -24,13 +33,3 @@ print corona.style #the style of the beer
 print corona.abv #the ABV (alcohol by volume) of the beer
 ```
 
-alternatively, 
-
-```python
-from pybeer import pybeer
-
-beer = pybeer.Beer
-print beer.get_brewer('coors light')
-print beer.get_style('corona extra')
-print beer.get_abv('modelo especiale')
-```
