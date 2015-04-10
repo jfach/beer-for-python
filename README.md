@@ -21,10 +21,11 @@ from pybeer import pybeer
 
 my_beer = pybeer.Beer('corona extra')
 
-print my_beer.name # name of the beer, which you set above
-print my_beer.brewer # the brewer of the beer
-print my_beer.style # the type/style this beer is considered
-print my_beer.abv # the ABV (alcohol by volume)
-print my_beer.score # average score on BA, averaged from thousands of users
+my_beer.name # name of the beer, which you set above
+my_beer.brewer # the brewer of the beer
+my_beer.style # the type/style this beer is considered
+my_beer.abv # the ABV (alcohol by volume)
+my_beer.score # average score on BA, averaged from thousands of users
+my_beer.description # commercial description
 ```
 
