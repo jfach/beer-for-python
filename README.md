@@ -1,17 +1,6 @@
 # Beer, for Python...
 
-# Description
-
 PyBeer is my solution to BeerAdvocate.com's lack of any sort of API. BeerAdvocate is a great resource, and has tons of quality data on a large variety of beers. Right now PyBeer utlizes mechanize, but most likely will not in the near future. This project is still in development, and while it is usable, should in no way shape or form be considered a completed package. 
-
-
-# Installation:
-
-Written in python 2.7, not yet tested on 3+ but it should work.
-
-```python
-pip install pybeer=0.1.4
-```
 
 # Example Usage
 
@@ -28,4 +17,14 @@ my_beer.abv # the ABV (alcohol by volume)
 my_beer.score # average score on BA, averaged from thousands of users
 my_beer.description # commercial description
 ```
+
+# Installation
+
+Written in python 2.7, not yet tested on 3+ but it should work.
+
+```python
+pip install pybeer=0.1.4
+```
+
+
 
