@@ -10,7 +10,7 @@ PyBeer is my solution to BeerAdvocate.com's lack of any sort of API. BeerAdvocat
 Written in python 2.7, not yet tested on 3+ but it should work.
 
 ```python
-pip install pybeer
+pip install pybeer=0.1.4
 ```
 
 # Example Usage
