@@ -2,13 +2,13 @@
 
 # Installation:
 
-```
+```python
 pip install pybeer
 ```
 
 # Example Usage
 
-```
+```python
 from pybeer import pybeer
 
 corona = pybeer.Beer('corona extra')
