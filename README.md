@@ -23,7 +23,7 @@ my_beer.description # commercial description
 Written in python 2.7, not yet tested on 3+ but it should work.
 
 ```python
-pip install pybeer=0.1.4
+pip install pybeer==0.1.4
 ```
 
 
