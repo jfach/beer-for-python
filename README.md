@@ -7,13 +7,15 @@ PyBeer is my solution to BeerAdvocate.com's lack of any sort of API. BeerAdvocat
 
 # Installation:
 
+Written in python 2.7, will work for 3 as soon as I change the print statements...
+
 ```python
 pip install pybeer
 ```
 
 # Example Usage
 
-Just make an instance of the Beer class and pass in the name of a beer as a string, and __init__ will gather the data for your beer.
+Just make an instance of the Beer class and pass in the name of a beer as a string, and __init__ will gather the data for your beer. All you need to do is access the values:
 ```python
 from pybeer import pybeer
 
