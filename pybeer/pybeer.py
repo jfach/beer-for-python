@@ -35,8 +35,8 @@ class Beer:
 		brewer = brewer_area[brewer_start+3:brewer_end]
 		return brewer
 
-	def get_score(beer):
-		raw = beer_profile(beer)
+	def get_score(self, beer):
+		raw = beer_data.beer_profile(beer)
 		score_pointer = raw.find("BAscore_big ba-score")
 		score_area = raw[score_pointer:score_pointer+100]
 		score_start = score_area.find(">")
