@@ -55,7 +55,7 @@ class Beer:
 	def get_description(self):
 		raw = self.raw_profile
 		desc_pointer = raw.find("Commercial Description")
-		desc_area = raw[desc_pointer:desc_pointer+200]
+		desc_area = raw[desc_pointer:]
 		desc_start = desc_area.find("<br><br>")
 		desc_end = desc_area.find("</td>")
 		description = desc_area[desc_start+8:desc_end]
