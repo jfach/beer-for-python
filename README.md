@@ -20,11 +20,16 @@ my_beer.description # commercial description
 
 # Installation
 
-Written in python 2.7, not yet tested on 3+ but it should work.
+Written in python 2.7, not yet 3 compatible. Will fix this as soon as I get around to it.
 
+```
+python setup.py install
+```
+Alternatively, you can use pip. However this is not the latest version!
 ```
 pip install pybeer==0.1.5
 ```
+
 
 
 
