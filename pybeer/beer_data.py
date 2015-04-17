@@ -2,7 +2,6 @@ import mechanize
 import bad_beer
 
 search = mechanize.Browser()
-search.set_handle_robots(False)
 search.addheaders = [("User-agent", 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.9.2.8) Gecko/20100722 Firefox/3.6.8 GTB7.1 (.NET CLR 3.5.30729)')]
 
 def generate_link(beer):
