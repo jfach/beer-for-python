@@ -28,11 +28,10 @@ def find_beer_link(beer):
     raise bad_beer.Invalid_Beer("ERROR: [{}] not found. "
                 "Did you check the spelling/name?".format(beer))
 
-def beer_profile(beer):
+def beer_profile_html(beer):
     beer_page = find_beer_link(beer)
     response = requests.get(beer_page)
     
-    #should we soup up here? It would mean importing BS just for one call
     return response.text
 
 

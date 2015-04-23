@@ -1,21 +1,34 @@
-import beer_data
-import bad_beer as errors
+import re
 
 from BeautifulSoup import BeautifulSoup as bs
+
+import beer_data
+import bad_beer as errors
 
 class Beer:
     def __init__(self, name):
         try:
             self.name = name.title()
-            self.raw_profile = beer_data.beer_profile(self.name)
-            self.score = self.get_score()
-            self.brewer = self.get_brewer()
-            self.style = self.get_style()
-            self.abv = self.get_abv()
-            self.description = self.get_description()
+            
+##            self.raw_profile = beer_data.beer_profile(self.name)
+
+            #keep the raw html, because some things may be easier to regex for
+            self._html = beer_data.beer_profile_html(name)
+            self._soup = bs(self._html)
+
+            #so that things don't break in the interim
+            self.raw_profile = self._html
+            
+            self.score = self.get_score()               #TODO
+            self.brewer = self.get_brewer()             #TODO
+            self.style = self.get_style()               #TODO
+            self.abv = self.get_abv()                   #DONE
+            
+            self.description = self.get_description()   #TODO
         except errors.Invalid_Beer as error:
             print(error.args[0])
         except AttributeError:
+            #This is never reached, I think?
             print("you are trying to call a data retrieval method"
                   "on a beer that could not be found")
 
@@ -25,13 +38,14 @@ class Beer:
                     self.name)
 
     def get_abv(self):
-        raw = self.raw_profile
-        abv_pointer = raw.find('Style | ABV')
-        abv_area = raw[abv_pointer:abv_pointer+100]
-        abv_start = abv_area.find(';')
-        abv_end = abv_area.find('%')
-        abv = abv_area[abv_start+1:abv_end+1]
-        return abv
+        style = self._soup.firstText("Style | ABV")
+        text = style.parent.parent.getText()
+
+        abv = re.search(r'([0-9.]+%)ABV', text)
+
+        #what about beers with multiple styles? (TODO)
+        #NB: I haven't found an example of that yet
+        return abv.groups()[0]
 
     def get_style(self):
         raw = self.raw_profile
