@@ -18,7 +18,7 @@ class Beer:
             self.raw_profile = self._html
             
             self.score = self.get_score()               #TODO
-            self.brewer = self.get_brewer()             #TODO
+            self.brewer = self.get_brewer()             #DONE
             self.style = self.get_style()               #DONE
             self.abv = self.get_abv()                   #DONE
             
@@ -52,12 +52,9 @@ class Beer:
         return style
 
     def get_brewer(self):
-        raw = self.raw_profile
-        brewer_pointer = raw.find("Brewed by")
-        brewer_area = raw[brewer_pointer:brewer_pointer+150]
-        brewer_start = brewer_area.find("<b>")
-        brewer_end = brewer_area.find("</b></a>")
-        brewer = brewer_area[brewer_start+3:brewer_end]
+        brewed_by_text = self._soup.firstText("Brewed by:")
+        brewer = brewed_by_text.findNext('b').getText()
+
         return brewer
 
     def get_score(self):
