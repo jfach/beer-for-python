@@ -14,7 +14,8 @@ class Beer:
             self._html = beer_data.beer_profile_html(name)
             self._soup = bs(self._html)
             
-            self.score, self.score_text = self.get_score()
+            self.score = self.get_score()
+            self.score_text = self.get_score_text()
             self.brewer = self.get_brewer()
             self.style = self.get_style()
             self.abv = self.get_abv()
@@ -56,9 +57,13 @@ class Beer:
 
     def get_score(self):
         score = self._soup.find(attrs={"class": "BAscore_big ba-score"})
-        rating_text = self._soup.find(attrs={"class": "ba-score_text"})
 
         return score.getText(), rating_text.getText()
+
+    def get_score_text(self):
+        score_text = self._soup.find(attrs={"class": "ba-score_text"})
+
+        return score_text
 
     def get_description(self):
         #is this ever not "No notes at this time."?
