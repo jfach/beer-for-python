@@ -9,8 +9,6 @@ class Beer:
     def __init__(self, name):
         try:
             self.name = name.title()
-            
-##            self.raw_profile = beer_data.beer_profile(self.name)
 
             #keep the raw html, because some things may be easier to regex for
             self._html = beer_data.beer_profile_html(name)
@@ -21,14 +19,14 @@ class Beer:
             
             self.score = self.get_score()               #TODO
             self.brewer = self.get_brewer()             #TODO
-            self.style = self.get_style()               #TODO
+            self.style = self.get_style()               #DONE
             self.abv = self.get_abv()                   #DONE
             
             self.description = self.get_description()   #TODO
         except errors.Invalid_Beer as error:
             print(error.args[0])
         except AttributeError:
-            #This is never reached, I think?
+            #This is never reached from this try block, I think?
             print("you are trying to call a data retrieval method"
                   "on a beer that could not be found")
 
@@ -38,8 +36,8 @@ class Beer:
                     self.name)
 
     def get_abv(self):
-        style = self._soup.firstText("Style | ABV")
-        text = style.parent.parent.getText()
+        styleabv = self._soup.firstText("Style | ABV")
+        text = styleabv.parent.parent.getText()
 
         abv = re.search(r'([0-9.]+%)ABV', text)
 
@@ -48,12 +46,9 @@ class Beer:
         return abv.groups()[0]
 
     def get_style(self):
-        raw = self.raw_profile
-        style_pointer = raw.find('Style | ABV')
-        style_area = raw[style_pointer:style_pointer+100]
-        style_start = style_area.find("><b>")
-        style_end = style_area.find("</b></a>")
-        style = style_area[style_start+4:style_end]
+        styleabv = self._soup.firstText("Style | ABV")
+        style = styleabv.findNext('b').getText()
+
         return style
 
     def get_brewer(self):
