@@ -10,19 +10,16 @@ class Beer:
         try:
             self.name = name.title()
 
-            #keep the raw html, because some things may be easier to regex for
+            #keep the raw html, just in case we want it
             self._html = beer_data.beer_profile_html(name)
             self._soup = bs(self._html)
+            
+            self.score, self.score_text = self.get_score()
+            self.brewer = self.get_brewer()
+            self.style = self.get_style()
+            self.abv = self.get_abv()
 
-            #so that things don't break in the interim
-            self.raw_profile = self._html
-            
-            self.score, self.score_text = self.get_score()  #DONE
-            self.brewer = self.get_brewer()                 #DONE
-            self.style = self.get_style()                   #DONE
-            self.abv = self.get_abv()                       #DONE
-            
-            self.description = self.get_description()       #TODO
+            self.description = self.get_description()
         except errors.Invalid_Beer as error:
             print(error.args[0])
         except AttributeError:
@@ -64,10 +61,14 @@ class Beer:
         return score.getText(), rating_text.getText()
 
     def get_description(self):
-        raw = self.raw_profile
-        desc_pointer = raw.find("Commercial Description")
-        desc_area = raw[desc_pointer:]
-        desc_start = desc_area.find("<br><br>")
-        desc_end = desc_area.find("</td>")
-        description = desc_area[desc_start+8:desc_end]
-        return description
+        #is this ever not "No notes at this time."?
+        desc = self._soup.firstText("Notes &amp; Commercial Description:")
+
+        all_text = desc.parent.parent.contents
+
+        #without a page that has something other than "No notes at this time.",
+        #it's pretty difficult to know how to handle this section if there's
+        #ever more than the one line
+        #if beeradvocate.com ever add in descriptions, this will need
+        #to be revisited (TODO, I guess)
+        return all_text[-1]
