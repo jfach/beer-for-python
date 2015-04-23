@@ -17,12 +17,12 @@ class Beer:
             #so that things don't break in the interim
             self.raw_profile = self._html
             
-            self.score = self.get_score()               #TODO
-            self.brewer = self.get_brewer()             #DONE
-            self.style = self.get_style()               #DONE
-            self.abv = self.get_abv()                   #DONE
+            self.score, self.score_text = self.get_score()  #DONE
+            self.brewer = self.get_brewer()                 #DONE
+            self.style = self.get_style()                   #DONE
+            self.abv = self.get_abv()                       #DONE
             
-            self.description = self.get_description()   #TODO
+            self.description = self.get_description()       #TODO
         except errors.Invalid_Beer as error:
             print(error.args[0])
         except AttributeError:
@@ -58,13 +58,10 @@ class Beer:
         return brewer
 
     def get_score(self):
-        raw = self.raw_profile
-        score_pointer = raw.find("BAscore_big ba-score")
-        score_area = raw[score_pointer:score_pointer+100]
-        score_start = score_area.find(">")
-        score_end = score_area.find("<")
-        score = score_area[score_start+1:score_end]
-        return score
+        score = self._soup.find(attrs={"class": "BAscore_big ba-score"})
+        rating_text = self._soup.find(attrs={"class": "ba-score_text"})
+
+        return score.getText(), rating_text.getText()
 
     def get_description(self):
         raw = self.raw_profile
