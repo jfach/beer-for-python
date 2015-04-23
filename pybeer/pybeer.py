@@ -1,6 +1,8 @@
 import beer_data
 import bad_beer as errors
 
+from BeautifulSoup import BeautifulSoup as bs
+
 class Beer:
     def __init__(self, name):
         try:
