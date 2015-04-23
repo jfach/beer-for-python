@@ -13,27 +13,16 @@ class Beer:
             #keep the raw html, just in case we want it
             self._html = beer_data.beer_profile_html(name)
             self._soup = bs(self._html)
-            
-            self.score = self.get_score()
-            self.score_text = self.get_score_text()
-            self.brewer = self.get_brewer()
-            self.style = self.get_style()
-            self.abv = self.get_abv()
-
-            self.description = self.get_description()
         except errors.Invalid_Beer as error:
             print(error.args[0])
-        except AttributeError:
-            #This is never reached from this try block, I think?
-            print("you are trying to call a data retrieval method"
-                  "on a beer that could not be found")
 
     def __repr__(self):
             return "{}(\"{}\")".format(
                     self.__class__.__name__,
                     self.name)
 
-    def get_abv(self):
+    @property
+    def abv(self):
         styleabv = self._soup.firstText("Style | ABV")
         text = styleabv.parent.parent.getText()
 
@@ -43,29 +32,34 @@ class Beer:
         #NB: I haven't found an example of that yet
         return abv.groups()[0]
 
-    def get_style(self):
+    @property
+    def style(self):
         styleabv = self._soup.firstText("Style | ABV")
         style = styleabv.findNext('b').getText()
 
         return style
 
-    def get_brewer(self):
+    @property
+    def brewer(self):
         brewed_by_text = self._soup.firstText("Brewed by:")
         brewer = brewed_by_text.findNext('b').getText()
 
         return brewer
 
-    def get_score(self):
+    @property
+    def score(self):
         score = self._soup.find(attrs={"class": "BAscore_big ba-score"})
 
         return score.getText(), rating_text.getText()
 
-    def get_score_text(self):
+    @property
+    def score_text(self):
         score_text = self._soup.find(attrs={"class": "ba-score_text"})
 
         return score_text
 
-    def get_description(self):
+    @property
+    def description(self):
         #is this ever not "No notes at this time."?
         desc = self._soup.firstText("Notes &amp; Commercial Description:")
 
