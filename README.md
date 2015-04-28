@@ -18,17 +18,6 @@ my_beer.score # average score on BA, averaged from thousands of users
 my_beer.description # commercial description
 ```
 
-# Installation
-
-Since mechanize is not supported (officially) in Python 3x yet, this will not work in 3x.
-
-```
-python setup.py install
-```
-Alternatively, you can use pip. However this is not the latest version!
-```
-pip install pybeer==0.1.5
-```
 
 
 
