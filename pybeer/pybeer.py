@@ -1,62 +1,73 @@
+import re
+
+from BeautifulSoup import BeautifulSoup as bs
+
 import beer_data
 import bad_beer as errors
 
 class Beer:
-	def __init__(self, name):
-		try:
-			self.name = name
-			self.raw_profile = beer_data.beer_profile(self.name)
-			self.score = self.get_score()
-			self.brewer = self.get_brewer()
-			self.style = self.get_style()
-			self.abv = self.get_abv()
-			self.description = self.get_description()
-		except errors.Invalid_Beer as error:
-			print(error.args[0])
-		except AttributeError:
-			print("you are trying to call a data retrieval method on a beer that could not be found")
+    def __init__(self, name):
+        try:
+            self.name = name.title()
 
-	def get_abv(self):
-		raw = self.raw_profile
-		abv_pointer = raw.find('Style | ABV')
-		abv_area = raw[abv_pointer:abv_pointer+100]
-		abv_start = abv_area.find(';')
-		abv_end = abv_area.find('%')
-		abv = abv_area[abv_start+1:abv_end+1]
-		return abv
+            #keep the raw html, just in case we want it
+            self._html = beer_data.beer_profile_html(name)
+            self._soup = bs(self._html)
+        except errors.Invalid_Beer as error:
+            print(error.args[0])
 
-	def get_style(self):
-		raw = self.raw_profile
-		style_pointer = raw.find('Style | ABV')
-		style_area = raw[style_pointer:style_pointer+100]
-		style_start = style_area.find("><b>")
-		style_end = style_area.find("</b></a>")
-		style = style_area[style_start+4:style_end]
-		return style
+    def __repr__(self):
+            return "{}(\"{}\")".format(
+                    self.__class__.__name__,
+                    self.name)
 
-	def get_brewer(self):
-		raw = self.raw_profile
-		brewer_pointer = raw.find("Brewed by")
-		brewer_area = raw[brewer_pointer:brewer_pointer+150]
-		brewer_start = brewer_area.find("<b>")
-		brewer_end = brewer_area.find("</b></a>")
-		brewer = brewer_area[brewer_start+3:brewer_end]
-		return brewer
+    @property
+    def abv(self):
+        styleabv = self._soup.firstText("Style | ABV")
+        text = styleabv.parent.parent.getText()
 
-	def get_score(self):
-		raw = self.raw_profile
-		score_pointer = raw.find("BAscore_big ba-score")
-		score_area = raw[score_pointer:score_pointer+100]
-		score_start = score_area.find(">")
-		score_end = score_area.find("<")
-		score = score_area[score_start+1:score_end]
-		return score
+        abv = re.search(r'([0-9.]+%)ABV', text)
 
-	def get_description(self):
-		raw = self.raw_profile
-		desc_pointer = raw.find("Commercial Description")
-		desc_area = raw[desc_pointer:]
-		desc_start = desc_area.find("<br><br>")
-		desc_end = desc_area.find("</td>")
-		description = desc_area[desc_start+8:desc_end]
-		return description
+        #what about beers with multiple styles? (TODO)
+        #NB: I haven't found an example of that yet
+        return abv.groups()[0]
+
+    @property
+    def style(self):
+        styleabv = self._soup.firstText("Style | ABV")
+        style = styleabv.findNext('b').getText()
+
+        return style
+
+    @property
+    def brewer(self):
+        brewed_by_text = self._soup.firstText("Brewed by:")
+        brewer = brewed_by_text.findNext('b').getText()
+
+        return brewer
+
+    @property
+    def score(self):
+        score = self._soup.find(attrs={"class": "BAscore_big ba-score"})
+
+        return score.getText()
+
+    @property
+    def score_text(self):
+        score_text = self._soup.find(attrs={"class": "ba-score_text"})
+
+        return score_text.getText()
+
+    @property
+    def description(self):
+        #is this ever not "No notes at this time."?
+        desc = self._soup.firstText("Notes &amp; Commercial Description:")
+
+        all_text = desc.parent.parent.contents
+
+        #without a page that has something other than "No notes at this time.",
+        #it's pretty difficult to know how to handle this section if there's
+        #ever more than the one line
+        #if beeradvocate.com ever add in descriptions, this will need
+        #to be revisited (TODO, I guess)
+        return all_text[-1]
