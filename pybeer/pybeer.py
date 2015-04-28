@@ -50,13 +50,13 @@ class Beer:
     def score(self):
         score = self._soup.find(attrs={"class": "BAscore_big ba-score"})
 
-        return score.getText(), rating_text.getText()
+        return score.getText()
 
     @property
     def score_text(self):
         score_text = self._soup.find(attrs={"class": "ba-score_text"})
 
-        return score_text
+        return score_text.getText()
 
     @property
     def description(self):
